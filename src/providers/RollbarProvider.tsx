@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import type Rollbar from 'rollbar';
 import { getRollbarConfig } from '../utils/rollbar';
-import Error from '../Views/Error/Error';
+import Error from '../views/Error/Error';
 
 const RollbarProvider: React.FC<PropsWithChildren<{ instance?: Rollbar }>> = ({
   children,

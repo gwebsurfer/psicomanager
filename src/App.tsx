@@ -1,6 +1,6 @@
 import RollbarProvider from './providers/RollbarProvider';
 import { ErrorBoundary } from '@rollbar/react';
-import { Home } from './Views/Home/Home';
+import { Home } from './views/Home/Home';
 
 function App() {
   return (
