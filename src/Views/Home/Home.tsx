@@ -1,9 +1,16 @@
 import { useEffect } from 'react';
 import { Post } from '../../typings/post';
 import useApi from '../../hooks/useApi';
+import { PostsList } from '../../components/PostsList/PostsList';
+import { useApiData } from '../../providers/ApiDataProvider';
+import { useModal } from '../../providers/ModalProvider';
+import { DeleteModal } from '../../components/DeleteModal/DeleteModal';
+import { UtilityBar } from '../../components/UtilityBar/Utilitybar';
 
 export const Home = () => {
-  const { data: posts, loading, error, getData } = useApi<Post>();
+  const { posts } = useApiData();
+  const { isModalOpen, closeModal, deletePost } = useModal();
+  const { loading, error, getData } = useApi<Post>();
 
   useEffect(() => {
     getData('posts');
@@ -11,21 +18,19 @@ export const Home = () => {
 
   if (loading) return <div>Carregando...</div>;
 
-  if (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : JSON.stringify(error);
-    return <div>Erro: {errorMessage}</div>;
-  }
+  if (error && error instanceof Error) return <div>Erro: {error.message}</div>;
 
   return (
-    <div>
-      <h1>Posts</h1>
-      {posts.map((post) => (
-        <div key={post.id}>
-          <h2>{post.title}</h2>
-          <p>{post.body}</p>
-        </div>
-      ))}
-    </div>
+    <section className='mt-16 pt-8 bg-[url("assets/bg-home.png")] bg-dark/[0.02] bg-fixed bg-contain bg-no-repeat bg-right-top bg-opacity-10'>
+      <div className='container mx-auto'>
+        <UtilityBar />
+        <PostsList posts={posts} />
+        <DeleteModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          onDelete={deletePost}
+        />
+      </div>
+    </section>
   );
 };
