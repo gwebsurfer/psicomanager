@@ -8,19 +8,21 @@ type ApiResource<T> = {
   data: T[];
   loading: boolean;
   error: unknown;
-  getData: (endpoint: Endpoint) => Promise<void>;
+  getData: (endpoint: Endpoint) => Promise<T[]>;
   create: (endpoint: Endpoint, newData: NewData) => Promise<void>;
   update: (endpoint: Endpoint, newData: NewData) => Promise<void>;
-  deleteData: (endpoint: Endpoint, newData: NewData) => Promise<void>;
+  deleteData: (endpoint: Endpoint, id: number) => Promise<void>;
 };
 
-const useApi = <T,>() => {
+const useApi = <T extends { id: number }>() => {
   const baseURL = import.meta.env.VITE_REACT_APP_API_URL;
   const [resource, setResource] = useState<ApiResource<T>>({
     data: [],
     loading: false,
     error: null,
-    getData: async () => {},
+    getData: async () => {
+      return [];
+    },
     create: async () => {},
     update: async () => {},
     deleteData: async () => {},
@@ -37,14 +39,19 @@ const useApi = <T,>() => {
   };
 
   const getData = useCallback(
-    async (endpoint: Endpoint) => {
+    async (endpoint: Endpoint): Promise<T[]> => {
       setResource((prev) => ({ ...prev, loading: true }));
       try {
         const response = await fetch(`${baseURL}/${endpoint}`);
-        const data = await response.json();
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data: T[] = await response.json();
         setResource((prev) => ({ ...prev, data, loading: false }));
+        return data;
       } catch (err) {
         handleError(err, 'Erro ao buscar os dados');
+        return [];
       }
     },
     [baseURL]
@@ -99,16 +106,20 @@ const useApi = <T,>() => {
   );
 
   const deleteData = useCallback(
-    async (endpoint: Endpoint, newData: NewData) => {
+    async (endpoint: Endpoint, id: number) => {
       setResource((prev) => ({ ...prev, loading: true }));
       try {
-        const response = await fetch(`${baseURL}/${endpoint}`, {
+        const response = await fetch(`${baseURL}/${endpoint}/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(newData),
         });
+        setResource((prev) => ({
+          ...prev,
+          data: prev.data.filter((item) => item.id !== id),
+          loading: false,
+        }));
         const data = await response.json();
         setResource((prev) => ({
           ...prev,
