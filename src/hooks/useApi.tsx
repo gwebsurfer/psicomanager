@@ -68,12 +68,16 @@ const useApi = <T extends { id: number }>() => {
           },
           body: JSON.stringify(newData),
         });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
         setResource((prev) => ({
           ...prev,
           data: [...prev.data, data],
           loading: false,
         }));
+        return data;
       } catch (err) {
         handleError(err, 'Erro ao salvar os dados');
       }
