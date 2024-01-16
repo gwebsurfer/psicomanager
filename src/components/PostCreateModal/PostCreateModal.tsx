@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Post } from '../../typings/post';
 import { useApiData } from '../../providers/ApiDataProvider';
-import { newPost } from '../../typings/newPost';
+import { NewPost } from '../../typings/newPost';
 import { PrimaryButton } from '../Button/Button';
 
 interface PostCreateModalProps {
@@ -22,7 +22,10 @@ export const PostCreateModal = ({
   const [titleError, setTitleError] = useState('');
   const [bodyError, setBodyError] = useState('');
 
-  const handleCreatePost = async () => {
+  const handleCreatePost = async (
+    event: React.FormEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
     setTitleError('');
     setBodyError('');
 
@@ -38,7 +41,7 @@ export const PostCreateModal = ({
       return;
     }
 
-    const newPostData: newPost = { userId: 1, title, body };
+    const newPostData: NewPost = { userId: 1, title, body };
     await createPost(newPostData);
     setTitle('');
     setBody('');
@@ -80,7 +83,7 @@ export const PostCreateModal = ({
         <h2 className='text-xl font-bold text-secondary mb-6 text-center'>
           Criar Nova Postagem
         </h2>
-        <section>
+        <form onSubmit={handleCreatePost}>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -108,7 +111,7 @@ export const PostCreateModal = ({
               Salvar Postagem
             </PrimaryButton>
           </div>
-        </section>
+        </form>
       </motion.div>
     </motion.div>
   );
