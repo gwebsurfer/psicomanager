@@ -1,6 +1,6 @@
-import AlertIcon from '../../assets/alert.svg';
+import AlertIcon from '../../assets/icons/alert.svg';
 
-export const DeleteModal = ({
+export const ConfirmPostDeleteModal = ({
   isOpen,
   onClose,
   onDelete,

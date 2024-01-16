@@ -1,4 +1,5 @@
 import { useModal } from '../../providers/ModalProvider';
+import { ModalTypes } from '../../typings/modalTypes';
 import { Tooltip } from '../Tooltip/Tooltip';
 
 type OptionsIconsGroupProps = {
@@ -8,8 +9,8 @@ type OptionsIconsGroupProps = {
 export const OptionsIconsGroup = ({ postId }: OptionsIconsGroupProps) => {
   const { openModal } = useModal();
   return (
-    <div className='grid grid-cols-3 gap-3'>
-      <button disabled aria-label='Editar'>
+    <div className='grid grid-cols-3 gap-0 sm:gap-4 sm:mx-auto justify-center items-center'>
+      <button disabled aria-label='Editar' className='mx-auto'>
         <svg
           width='16'
           height='16'
@@ -23,7 +24,7 @@ export const OptionsIconsGroup = ({ postId }: OptionsIconsGroupProps) => {
           />
         </svg>
       </button>
-      <button disabled aria-label='Duplicar'>
+      <button disabled aria-label='Duplicar' className='mx-auto'>
         <svg
           width='16'
           height='16'
@@ -38,7 +39,11 @@ export const OptionsIconsGroup = ({ postId }: OptionsIconsGroupProps) => {
         </svg>
       </button>
       <Tooltip text='Excluir'>
-        <button aria-label='Excluir' onClick={() => openModal(postId)}>
+        <button
+          aria-label='Excluir'
+          onClick={() => openModal(ModalTypes.POST_DELETE, postId)}
+          className='mx-auto'
+        >
           <svg
             width='16'
             height='16'

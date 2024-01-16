@@ -1,10 +1,25 @@
+import { useModal } from '../../providers/ModalProvider';
+import { ModalTypes } from '../../typings/modalTypes';
 import { PrimaryButton } from '../Button/Button';
 
-export const UtilityBar = () => {
+export const UtilityBar = ({
+  searchTerm,
+  onSearchChange,
+}: {
+  searchTerm: string;
+  onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  const { openModal } = useModal();
+
+  const handlePostCreateModal = () => {
+    openModal(ModalTypes.POST_CREATE);
+  };
+
   return (
-    <section className='max-h-16 mb-6 bg-dark bg-opacity-5 backdrop-blur-sm border border-light sm:rounded-lg'>
-      <div className=' p-3  sm:py-3 sm:px-6 flex items-center justify-between'>
+    <section className='max-h-16 mb-6 bg-dark bg-opacity-5 backdrop-blur-sm border border-light sm:rounded-lg mx-4'>
+      <div className='p-3 sm:py-3 sm:px-6 flex items-center justify-between'>
         <PrimaryButton
+          onClick={() => handlePostCreateModal()}
           icon={
             <svg
               width='12'
@@ -28,6 +43,8 @@ export const UtilityBar = () => {
               type='text'
               name='search'
               id='search'
+              value={searchTerm}
+              onChange={onSearchChange}
               className='w-60 sm:w-96 focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md pl-4 text-xs border-gray-300'
               placeholder='Pesquise por título'
             />
