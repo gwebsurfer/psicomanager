@@ -22,9 +22,7 @@ export const PostCreateModal = ({
   const [titleError, setTitleError] = useState('');
   const [bodyError, setBodyError] = useState('');
 
-  const handleCreatePost = async (
-    event: React.FormEvent<HTMLButtonElement>
-  ) => {
+  const handleCreatePost = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setTitleError('');
     setBodyError('');
@@ -107,9 +105,7 @@ export const PostCreateModal = ({
             {bodyError && <p className='text-red-600 text-xs'>{bodyError}</p>}
           </div>
           <div className='mt-4 flex justify-end'>
-            <PrimaryButton onClick={handleCreatePost}>
-              Salvar Postagem
-            </PrimaryButton>
+            <PrimaryButton type='submit'>Salvar Postagem</PrimaryButton>
           </div>
         </form>
       </motion.div>
