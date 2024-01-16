@@ -19,12 +19,22 @@ export const PostCreateModal = ({
   const { createPost } = useApiData();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [titleError, setTitleError] = useState('');
+  const [bodyError, setBodyError] = useState('');
 
   const handleCreatePost = async () => {
+    setTitleError('');
+    setBodyError('');
+
     if (posts.some((post) => post.title === title)) {
-      alert(
+      setTitleError(
         'Já existe um post com este título. Por favor, digite um título diferente.'
       );
+      return;
+    }
+
+    if (!body.trim()) {
+      setBodyError('O campo de conteúdo não pode estar em branco.');
       return;
     }
 
@@ -46,7 +56,7 @@ export const PostCreateModal = ({
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
-        className='relative p-6 bg-light shadow-2xl max-w-xl rounded-xl'
+        className='relative p-6 bg-light shadow-2xl max-w-xl sm:w-[500px] rounded-xl'
       >
         <button
           onClick={onClose}
@@ -84,12 +94,16 @@ export const PostCreateModal = ({
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder='Conteúdo da postagem'
-            className='mb-3 p-2 text-sm text-secondary font-light rounded-md w-full'
+            className='mb-1 p-2 text-sm text-secondary font-light rounded-md w-full'
             id='body'
             name='body'
             rows={4}
           />
-          <div className='flex justify-end'>
+          <div className='flex justify-start'>
+            {titleError && <p className='text-red-600 text-xs'>{titleError}</p>}
+            {bodyError && <p className='text-red-600 text-xs'>{bodyError}</p>}
+          </div>
+          <div className='mt-4 flex justify-end'>
             <PrimaryButton onClick={handleCreatePost}>
               Salvar Postagem
             </PrimaryButton>
