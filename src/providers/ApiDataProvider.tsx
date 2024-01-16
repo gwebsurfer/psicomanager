@@ -3,6 +3,7 @@ import { Post } from '../typings/post';
 import { Comment } from '../typings/comment';
 import { User } from '../typings/user';
 import useApi from '../hooks/useApi';
+import { newPost } from '../typings/newPost';
 
 type ApiDataContextType = {
   posts: Post[];
@@ -11,6 +12,7 @@ type ApiDataContextType = {
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
   users: User[];
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  createPost: (post: newPost) => Promise<void>;
   deletePost: (id: number) => Promise<void>;
 };
 
@@ -27,12 +29,19 @@ export const useApiData = () => {
 };
 
 export const ApiDataProvider: React.FC<Props> = ({ children }) => {
-  const { getData: getPosts, deleteData } = useApi<Post>();
+  const { getData: getPosts, create, deleteData } = useApi<Post>();
   const [posts, setPosts] = useState<Post[]>([]);
   const { getData: getComments } = useApi<Comment>();
   const [comments, setComments] = useState<Comment[]>([]);
   const { getData: getUsers } = useApi<User>();
   const [users, setUsers] = useState<User[]>([]);
+
+  const createPost = async (postData: newPost) => {
+    const createdPost = await create('posts', postData);
+    if (createdPost) {
+      setPosts((currentPosts) => [...currentPosts, createdPost as Post]);
+    }
+  };
 
   const deletePost = async (id: number) => {
     await deleteData('posts', id);
@@ -54,6 +63,7 @@ export const ApiDataProvider: React.FC<Props> = ({ children }) => {
         setComments,
         users,
         setUsers,
+        createPost,
         deletePost,
       }}
     >
