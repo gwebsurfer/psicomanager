@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useModal } from '../../providers/ModalProvider';
 import { ModalTypes } from '../../typings/modalTypes';
 import { PrimaryButton } from '../Button/Button';
@@ -16,7 +17,12 @@ export const UtilityBar = ({
   };
 
   return (
-    <section className='max-h-16 mb-6 bg-dark bg-opacity-5 backdrop-blur-sm border border-light sm:rounded-lg mx-4'>
+    <motion.section
+      initial={{ y: -10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className='max-h-16 mb-6 bg-dark bg-opacity-5 backdrop-blur-sm border border-light sm:rounded-lg mx-4'
+    >
       <div className='p-3 sm:py-3 sm:px-6 flex items-center justify-between'>
         <PrimaryButton
           onClick={() => handlePostCreateModal()}
@@ -65,6 +71,6 @@ export const UtilityBar = ({
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };

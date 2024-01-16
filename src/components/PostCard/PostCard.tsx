@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useModal } from '../../providers/ModalProvider';
 import { ModalTypes } from '../../typings/modalTypes';
 import { Post } from '../../typings/post';
@@ -18,7 +19,12 @@ export const PostCard = ({ post, setCurrentPostId }: PostCardProps) => {
   };
 
   return (
-    <div className='bg-white backdrop-blur-sm bg-opacity-70 rounded-lg py-6 px-8 mb-2 mx-6 sm:mx-4 shadow-lg grid grid-cols-1 sm:grid-cols-12 gap-6 hover:bg-opacity-100'>
+    <motion.div
+      initial={{ y: -10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className='bg-white backdrop-blur-sm bg-opacity-70 rounded-lg py-6 px-8 mb-2 mx-6 sm:mx-4 shadow-lg grid grid-cols-1 sm:grid-cols-12 gap-6 hover:bg-opacity-100'
+    >
       <button
         onClick={() => handlePostClick(post.id)}
         className='m-auto bg-light w-10 h-10 rounded-full col-span-12 sm:col-span-2 md:col-span-1'
@@ -41,6 +47,6 @@ export const PostCard = ({ post, setCurrentPostId }: PostCardProps) => {
       <div className='my-auto col-span-12 sm:col-span-2 md:col-span-1'>
         <OptionsIconsGroup postId={post.id} />
       </div>
-    </div>
+    </motion.div>
   );
 };

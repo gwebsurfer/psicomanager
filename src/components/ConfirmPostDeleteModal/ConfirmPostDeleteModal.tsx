@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import AlertIcon from '../../assets/icons/alert.svg';
 
 export const ConfirmPostDeleteModal = ({
@@ -12,8 +13,16 @@ export const ConfirmPostDeleteModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className='fixed inset-0 z-50 overflow-auto bg-dark bg-opacity-70 flex'>
-      <div className='relative p-8 bg-white shadow-2xl w-[80%] lg:w-[50%] max-w-md m-auto flex-col flex rounded-xl'>
+    <motion.div
+      transition={{ duration: 0.5 }}
+      className='fixed inset-0 z-50 overflow-auto bg-dark bg-opacity-70 flex'
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        className='relative p-8 bg-white shadow-2xl w-[80%] lg:w-[50%] max-w-md m-auto flex-col flex rounded-xl'
+      >
         <div className='text-center mb-4'>
           <img
             src={AlertIcon}
@@ -40,7 +49,7 @@ export const ConfirmPostDeleteModal = ({
             Excluir
           </button>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };

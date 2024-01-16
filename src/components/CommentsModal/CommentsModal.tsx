@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useApiData } from '../../providers/ApiDataProvider';
 import { Comment } from '../../typings/comment';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
@@ -22,8 +23,16 @@ export const CommentsModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className='fixed inset-0 z-50 overflow-y-auto bg-dark bg-opacity-70 flex'>
-      <div className='relative p-6 bg-white shadow-2xl max-w-2xl max-h-[50%] m-auto flex-col flex rounded-xl overflow-hidden'>
+    <motion.div
+      transition={{ duration: 0.5 }}
+      className='fixed inset-0 z-50 overflow-y-auto bg-dark bg-opacity-70 flex'
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        className='relative p-6 bg-white shadow-2xl max-w-2xl max-h-[50%] m-auto flex-col flex rounded-xl overflow-hidden'
+      >
         <button
           onClick={onClose}
           className='absolute top-0 right-0 mt-3 mr-3 text-lg font-bold text-dark hover:opacity-15'
@@ -70,7 +79,7 @@ export const CommentsModal = ({
             </div>
           ))}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };

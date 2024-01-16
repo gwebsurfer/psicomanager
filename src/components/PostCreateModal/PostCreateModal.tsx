@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Post } from '../../typings/post';
 import { useApiData } from '../../providers/ApiDataProvider';
 import { newPost } from '../../typings/newPost';
@@ -37,8 +38,16 @@ export const PostCreateModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className='fixed inset-0 z-50 bg-dark bg-opacity-70 flex items-center justify-center'>
-      <div className='relative p-6 bg-light shadow-2xl max-w-xl rounded-xl'>
+    <motion.div
+      transition={{ duration: 0.5 }}
+      className='fixed inset-0 z-50 bg-dark bg-opacity-70 flex items-center justify-center'
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        className='relative p-6 bg-light shadow-2xl max-w-xl rounded-xl'
+      >
         <button
           onClick={onClose}
           className='absolute top-2 right-2 mt-2 mr-2 text-lg font-bold text-dark hover:opacity-15'
@@ -86,7 +95,7 @@ export const PostCreateModal = ({
             </PrimaryButton>
           </div>
         </section>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
