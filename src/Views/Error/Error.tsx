@@ -1,5 +1,4 @@
 import React from 'react';
-//import { ViewContainer } from './Error.styles';
 import { useRollbar } from '@rollbar/react';
 
 type Props = {
