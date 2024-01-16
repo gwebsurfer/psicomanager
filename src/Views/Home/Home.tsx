@@ -46,7 +46,7 @@ export const Home = () => {
   const hasPosts = filteredPosts.length > 0;
 
   return (
-    <section className='mt-16 pt-8 bg-[url("assets/bg/bg-home.png")] bg-dark/[0.02] bg-fixed bg-contain bg-no-repeat bg-right-top bg-opacity-10'>
+    <section className='mt-16 pt-8 bg-[url("assets/bg/bg-home-min.png")] bg-dark/[0.02] bg-fixed bg-contain bg-no-repeat bg-right-top bg-opacity-10'>
       <div className='container sm:max-w-5xl mx-auto'>
         <UtilityBar
           searchTerm={searchTerm}
