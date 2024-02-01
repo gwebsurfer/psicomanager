@@ -1,9 +1,11 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Post } from '../../typings/post';
 import { useApiData } from '../../providers/ApiDataProvider';
 import { NewPost } from '../../typings/newPost';
 import { PrimaryButton } from '../Button/Button';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
 interface PostCreateModalProps {
   isOpen: boolean;
@@ -11,39 +13,36 @@ interface PostCreateModalProps {
   posts: Post[];
 }
 
-export const PostCreateModal = ({
-  isOpen,
-  onClose,
-  posts,
-}: PostCreateModalProps) => {
+const postCreateSchema = z.object({
+  title: z.string().min(1),
+  body: z.string().min(2),
+});
+
+type PostCreateSchema = z.infer<typeof postCreateSchema>;
+
+export const PostCreateModal = ({ isOpen, onClose }: PostCreateModalProps) => {
   const { createPost } = useApiData();
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [titleError, setTitleError] = useState('');
-  const [bodyError, setBodyError] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PostCreateSchema>({
+    resolver: zodResolver(postCreateSchema),
+  });
 
-  const handleCreatePost = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setTitleError('');
-    setBodyError('');
-
-    if (posts.some((post) => post.title === title)) {
-      setTitleError(
-        'Já existe um post com este título. Por favor, digite um título diferente.'
-      );
-      return;
+  const handleCreatePost = async (data: PostCreateSchema) => {
+    const newPostData: NewPost = {
+      userId: 1,
+      title: data.title,
+      body: data.body,
+    };
+    try {
+      console.log(newPostData);
+      await createPost(newPostData);
+      onClose();
+    } catch (error) {
+      console.error('Erro ao criar a postagem', error);
     }
-
-    if (!body.trim()) {
-      setBodyError('O campo de conteúdo não pode estar em branco.');
-      return;
-    }
-
-    const newPostData: NewPost = { userId: 1, title, body };
-    await createPost(newPostData);
-    setTitle('');
-    setBody('');
-    onClose();
   };
 
   if (!isOpen) return null;
@@ -81,29 +80,31 @@ export const PostCreateModal = ({
         <h2 className='text-xl font-bold text-secondary mb-6 text-center'>
           Criar Nova Postagem
         </h2>
-        <form onSubmit={handleCreatePost}>
+        <form onSubmit={handleSubmit(handleCreatePost)}>
           <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            {...register('title')}
             placeholder='Título da postagem'
             className='mb-3 p-2 text-sm text-secondary font-light rounded-md w-full'
             id='title'
-            name='title'
             type='text'
           />
+          {errors.title?.message && (
+            <p className='mb-4 text-xs text-red-500'>
+              Digite um título para a postagem.
+            </p>
+          )}
           <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
+            {...register('body')}
             placeholder='Conteúdo da postagem'
             className='mb-1 p-2 text-sm text-secondary font-light rounded-md w-full'
             id='body'
-            name='body'
             rows={4}
           />
-          <div className='flex justify-start'>
-            {titleError && <p className='text-red-600 text-xs'>{titleError}</p>}
-            {bodyError && <p className='text-red-600 text-xs'>{bodyError}</p>}
-          </div>
+          {errors.body?.message && (
+            <p className='mb-4 text-xs text-red-500'>
+              Digite o conteúdo da postagem.
+            </p>
+          )}
           <div className='mt-4 flex justify-end'>
             <PrimaryButton type='submit'>Salvar Postagem</PrimaryButton>
           </div>
