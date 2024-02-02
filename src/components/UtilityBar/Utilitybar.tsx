@@ -51,7 +51,7 @@ export const UtilityBar = ({
               id='search'
               value={searchTerm}
               onChange={onSearchChange}
-              className='w-60 sm:w-96 focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md pl-4 text-xs border-gray-300'
+              className='w-60 sm:w-96 focus:ring-indigo-500 focus:border-indigo-500 block rounded-none rounded-l-md pl-4 text-xs border-gray-300'
               placeholder='Pesquisar por título'
             />
             <button className='p-2 rounded-r-md text-sm font-medium bg-white text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500'>
