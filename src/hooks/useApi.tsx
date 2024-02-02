@@ -3,6 +3,7 @@ import rollbar from '../utils/rollbar';
 import { Endpoint } from '../typings/endpoint';
 import { NewData } from '../typings/newData';
 import { LogArgument } from 'rollbar';
+import { showToast } from '../utils/showToast';
 
 type ApiResource<T> = {
   data: T[];
@@ -50,6 +51,7 @@ const useApi = <T extends { id: number }>() => {
         setResource((prev) => ({ ...prev, data, loading: false }));
         return data;
       } catch (err) {
+        showToast('Erro ao consultar as postagens', 'error');
         handleError(err, 'Erro ao buscar os dados');
         return [];
       }
@@ -77,8 +79,10 @@ const useApi = <T extends { id: number }>() => {
           data: [...prev.data, data],
           loading: false,
         }));
+        showToast('Postagem criada com sucesso!', 'success');
         return data;
       } catch (err) {
+        showToast('Erro ao criar a postagem', 'error');
         handleError(err, 'Erro ao salvar os dados');
       }
     },
@@ -102,7 +106,9 @@ const useApi = <T extends { id: number }>() => {
           data: [...prev.data, data],
           loading: false,
         }));
+        showToast('Postagem atualizada com sucesso!', 'success');
       } catch (err) {
+        showToast('Erro ao atualizar a postagem', 'error');
         handleError(err, 'Erro ao atualizar os dados');
       }
     },
@@ -130,7 +136,9 @@ const useApi = <T extends { id: number }>() => {
           data: [...prev.data, data],
           loading: false,
         }));
+        showToast('Postagem excluída com sucesso!', 'success');
       } catch (err) {
+        showToast('Erro ao excluir a postagem', 'error');
         handleError(err, 'Erro ao deletar os dados');
       }
     },

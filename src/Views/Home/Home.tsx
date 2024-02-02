@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Post } from '../../typings/post';
+import { Bounce, ToastContainer } from 'react-toastify';
 import useApi from '../../hooks/useApi';
-import { PostsList } from '../../components/PostsList/PostsList';
 import { useApiData } from '../../providers/ApiDataProvider';
 import { useModal } from '../../providers/ModalProvider';
+import { PostsList } from '../../components/PostsList/PostsList';
 import { ConfirmPostDeleteModal } from '../../components/ConfirmPostDeleteModal/ConfirmPostDeleteModal';
-import { UtilityBar } from '../../components/UtilityBar/Utilitybar';
-import { ModalTypes } from '../../typings/modalTypes';
 import { PostCreateModal } from '../../components/PostCreateModal/PostCreateModal';
 import { CommentsModal } from '../../components/CommentsModal/CommentsModal';
 import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner';
+import { UtilityBar } from '../../components/UtilityBar/Utilitybar';
+import { Post } from '../../typings/post';
+import { ModalTypes } from '../../typings/modalTypes';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Home = () => {
   const { posts } = useApiData();
@@ -47,6 +50,19 @@ export const Home = () => {
 
   return (
     <section className='mt-16 pt-8 bg-[url("assets/bg/bg-home-min.png")] bg-dark/[0.02] bg-fixed bg-contain bg-no-repeat bg-right-top bg-opacity-10'>
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='light'
+        transition={Bounce}
+      />
       <div className='container sm:max-w-5xl mx-auto'>
         <UtilityBar
           searchTerm={searchTerm}

@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion';
-import { Post } from '../../typings/post';
-import { useApiData } from '../../providers/ApiDataProvider';
-import { NewPost } from '../../typings/newPost';
-import { PrimaryButton } from '../Button/Button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { motion } from 'framer-motion';
+import { useApiData } from '../../providers/ApiDataProvider';
+import { Post } from '../../typings/post';
+import { NewPost } from '../../typings/newPost';
+import { PrimaryButton } from '../Button/Button';
 
 interface PostCreateModalProps {
   isOpen: boolean;
@@ -36,13 +36,9 @@ export const PostCreateModal = ({ isOpen, onClose }: PostCreateModalProps) => {
       title: data.title,
       body: data.body,
     };
-    try {
-      console.log(newPostData);
-      await createPost(newPostData);
-      onClose();
-    } catch (error) {
-      console.error('Erro ao criar a postagem', error);
-    }
+
+    await createPost(newPostData);
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -78,7 +74,7 @@ export const PostCreateModal = ({ isOpen, onClose }: PostCreateModalProps) => {
           </svg>
         </button>
         <h2 className='text-xl font-bold text-secondary mb-6 text-center'>
-          Criar Nova Postagem
+          Criar nova postagem
         </h2>
         <form onSubmit={handleSubmit(handleCreatePost)}>
           <input
